@@ -6,23 +6,30 @@ import (
 )
 
 /*
+Send a byte slice as a response.
+*/
+func ByteSlice(w http.ResponseWriter, message []byte, statusCode int) {
+	w.WriteHeader(statusCode)
+	w.Write(message)
+}
+
+/*
 Send a string as your response.
 */
-func Simple(w http.ResponseWriter, message String, statusCode int) {
-	w.WriteHeader(statusCode)
-	response.Write([]byte(message))
+func Simple(w http.ResponseWriter, message string, statusCode int) {
+	ByteSlice(w, []byte(message), statusCode)
 }
 
 /*
 Send a json-serializable object as the response.
 */
 func Json(w http.ResponseWriter, message interface{}, statusCode int) error {
-	jsonAsString, err := json.Marshal(message)
+	jsonAsByteSlice, err := json.Marshal(message)
 
 	if err != nil {
 		return err
 	}
 
-	Simple(w, jsonAsString, statusCode)
+	ByteSlice(w, jsonAsByteSlice, statusCode)
 	return nil
 }
