@@ -23,13 +23,14 @@ func Simple(w http.ResponseWriter, message string, statusCode int) {
 /*
 Send a json-serializable object as the response.
 */
-func Json(w http.ResponseWriter, message interface{}, statusCode int) error {
+func JSON(w http.ResponseWriter, message interface{}, statusCode int) error {
 	jsonAsByteSlice, err := json.Marshal(message)
 
 	if err != nil {
 		return err
 	}
 
+	w.Header().Add("Content-Type", "application/json")
 	ByteSlice(w, jsonAsByteSlice, statusCode)
 	return nil
 }
