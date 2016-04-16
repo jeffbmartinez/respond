@@ -6,7 +6,7 @@ import (
 )
 
 /*
-Send a byte slice as a response.
+ByteSlice send a byte slice as a response.
 */
 func ByteSlice(w http.ResponseWriter, message []byte, statusCode int) {
 	w.WriteHeader(statusCode)
@@ -14,14 +14,14 @@ func ByteSlice(w http.ResponseWriter, message []byte, statusCode int) {
 }
 
 /*
-Send a string as your response.
+Simple sends a string as your response.
 */
 func Simple(w http.ResponseWriter, message string, statusCode int) {
 	ByteSlice(w, []byte(message), statusCode)
 }
 
 /*
-Send a json-serializable object as the response.
+JSON sends a json-serializable object as the response.
 */
 func JSON(w http.ResponseWriter, message interface{}, statusCode int) error {
 	jsonAsByteSlice, err := json.Marshal(message)
@@ -33,4 +33,12 @@ func JSON(w http.ResponseWriter, message interface{}, statusCode int) error {
 	w.Header().Add("Content-Type", "application/json")
 	ByteSlice(w, jsonAsByteSlice, statusCode)
 	return nil
+}
+
+/*
+HTML sends an html string as the response.
+*/
+func HTML(w http.ResponseWriter, message string, statusCode int) {
+	w.Header().Add("Content-Type", "text/html")
+	Simple(w, message, statusCode)
 }
