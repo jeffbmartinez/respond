@@ -38,7 +38,9 @@ func Simple(w http.ResponseWriter, statusCode int) {
 
 /*
 JSON sends a json-serializable object as the response and sets
-"Content-Type" header to "application/json".
+"Content-Type" header to "application/json". If there is an error
+the error is returned and the Content-Type is not set, the
+http.ResponseWriter object is not written to or modified.
 */
 func JSON(w http.ResponseWriter, message interface{}, statusCode int) error {
 	jsonAsByteSlice, err := json.Marshal(message)
@@ -64,8 +66,8 @@ func HTML(w http.ResponseWriter, message string, statusCode int) {
 /*
 HTMLTemplate renders an html template and sends an html string as the response. Will return an error
 if the template was not found or otherwise had a problem. In the case of an error,
-the http.ResponseWriter object will not be written to or modified and it is the developer's
-responsibility to take appropriate action, such as respond.Simple(w, http.StatusInternalServerError)
+the http.ResponseWriter object will not be written to or modified and the developer
+should take appropriate action, such as respond.Simple(w, http.StatusInternalServerError)
 */
 func HTMLTemplate(w http.ResponseWriter, templateName string, data interface{}, statusCode int) error {
 	t, err := template.ParseFiles(templateName)
