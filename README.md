@@ -10,7 +10,7 @@ Feel free to see the [docs for respond](https://godoc.org/github.com/jeffbmartin
 
 ```
 func MyRequestHandler(w http.ResponseWriter, r *http.Request) {
-	respond.String(w, "This is the response string", http.StatusOK)
+	respond.String(w, http.StatusOK, "This is the response string")
 }
 ```
 
@@ -24,7 +24,7 @@ func MyRequestHandler(w http.ResponseWriter, r *http.Request) {
 		// ...
 	}
 
-	if err := respond.JSON(w, myObject, http.StatusOK); err != nil {
+	if err := respond.JSON(w, http.StatusOK, myObject); err != nil {
 		// Problem serializing object to json, handle error as appropriate
 		respond.Simple(w, http.StatusInternalServerError)
 		return
@@ -39,7 +39,7 @@ This will automatically set `Content-Type` header as appropriate.
 ```
 func MyRequestHandler(w http.ResponseWriter, r *http.Request) {
 	htmlResponseString := "<html>...</html>"
-	respond.HTML(w, htmlResponseString, http.StatusOK)
+	respond.HTML(w, http.StatusOK, htmlResponseString)
 }
 ```
 
@@ -50,7 +50,7 @@ func MyRequestHandler(w http.ResponseWriter, r *http.Request) {
 	templateName := "index.html"
 	data := /* data used to populate template */
 
-	if err := respond.HTMLTemplate(w, templateName, data, http.StatusOK); err != nil {
+	if err := respond.HTMLTemplate(w, http.StatusOK, templateName, data); err != nil {
 	    // template rendering problem :(
 	    // maybe log it and return 500 internal server error
 
